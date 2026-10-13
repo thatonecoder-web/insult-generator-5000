@@ -1,0 +1,22 @@
+LICENSE PLACEHOLDER
+
+No license has been chosen for this project yet. Until one is added, the default legal position
+is "all rights reserved": nobody else may legally use, copy or modify this code.
+
+Decide before publishing, then replace this file with the full license text, and add the
+`license` field to pyproject.toml.
+
+Common options:
+
+  MIT          Very permissive, short, widely understood. Allows commercial use and
+               closed-source derivatives, requires keeping the copyright notice. Recommended
+               for a library like this unless you have a specific reason otherwise.
+  Apache-2.0   Permissive like MIT, plus an explicit patent grant. A good choice if patents
+               or corporate contributors are a concern.
+  GPL-3.0      Copyleft: derivatives must also be released under the GPL. Choose it if you
+               want improvements to stay open.
+
+The dataset is a creative and editorial work as well as code. If you want different terms for
+it (for example CC BY 4.0), say so here when you decide.
+
+Copyright holder: [TO BE DECIDED]
