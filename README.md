@@ -132,5 +132,5 @@ It deliberately excludes slurs aimed at protected characteristics and sexual con
 
 ## License
 
-No license has been chosen yet. See [LICENSE](LICENSE). The bundled fonts have their own
+See [LICENSE](LICENSE). The bundled fonts have their own
 licenses; see [web/public/fonts/README.md](web/public/fonts/README.md).
