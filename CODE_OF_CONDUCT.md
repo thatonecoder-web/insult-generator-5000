@@ -25,7 +25,7 @@ This project is about the craft of insults as language. That is a topic, not a l
 
 Maintainers may edit or remove comments, commits and issues that violate this code, and may temporarily or permanently ban contributors for behaviour they judge inappropriate.
 
-Report problems to the maintainers at: [CONTACT METHOD TO BE ADDED BEFORE PUBLIC RELEASE].
+Report problems to the maintainers at: iman123ahmadi@outlook.com.
 Reports are handled confidentially, and reporters are not retaliated against.
 
 ## Attribution
