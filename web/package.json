@@ -1,0 +1,22 @@
+{
+  "name": "insult-generator-5000-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "React front end for insult-generator-5000",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.27.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,595 @@
+/* ---------- The stage: one visual world per register ---------- */
+.stage {
+  --stage-ink: var(--text);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: 400px;
+  padding: clamp(20px, 3.4vw, 36px);
+  border-radius: 28px;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(520px 260px at 50% -10%, color-mix(in srgb, var(--reg, var(--accent)) 16%, transparent), transparent 70%),
+    var(--surface);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    var(--shadow);
+  overflow: hidden;
+  transition: background 0.5s;
+}
+.stage--any {
+  --reg: var(--accent);
+}
+
+.stage__chrome {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.stage__label,
+.stage__register {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.stage__label {
+  color: var(--text-faint);
+}
+.stage__register {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--reg) 55%, transparent);
+  color: var(--reg);
+}
+
+.stage__body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-height: 180px;
+}
+.stage__text {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.7rem, 3.6vw, 2.7rem);
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  color: var(--stage-ink);
+  text-wrap: balance;
+  transition:
+    opacity 0.3s,
+    filter 0.3s;
+}
+.stage.is-loading .stage__text {
+  opacity: 0.45;
+  filter: blur(1.5px);
+}
+.stage__placeholder {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.6rem;
+  color: var(--text-faint);
+}
+.stage__error {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+  font-size: 1.05rem;
+  color: var(--text-dim);
+}
+
+/* Words animate in one by one. */
+.word {
+  display: inline-block;
+  white-space: pre-wrap;
+  opacity: 0;
+  animation: word-in 0.75s var(--ease) forwards;
+  animation-delay: calc(var(--i) * 70ms);
+}
+@keyframes word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.45em) scale(0.97);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+.word--group {
+  white-space: nowrap;
+}
+.word__entry {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-shadow: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--reg);
+  text-decoration-thickness: 0.07em;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.word__entry:hover,
+.word__entry:focus-visible {
+  background: color-mix(in srgb, var(--reg) 20%, transparent);
+}
+.tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  z-index: 5;
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  max-width: 260px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #1b1612;
+  border: 1px solid rgba(255, 240, 220, 0.18);
+  color: #f6eee1;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-transform: none;
+  text-shadow: none;
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 6px);
+  transition:
+    opacity 0.2s,
+    transform 0.25s var(--ease);
+  box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.7);
+}
+.tip i {
+  color: #bfb2a0;
+  font-style: italic;
+  margin-left: 4px;
+}
+.tip span {
+  color: #bfb2a0;
+}
+.word__entry:hover .tip,
+.word__entry:focus-visible .tip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.stage__actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.stage__actions .btn {
+  padding: 0.7rem 1.15rem;
+  font-size: 0.88rem;
+}
+@media (max-width: 520px) {
+  .stage__actions .btn kbd {
+    display: none;
+  }
+}
+
+/* ---------- Casual: a chat bubble ---------- */
+.stage--casual .stage__text {
+  display: inline-block;
+  padding: 22px 28px;
+  border-radius: 28px 28px 28px 8px;
+  border: 1px solid color-mix(in srgb, var(--reg) 60%, transparent);
+  background: color-mix(in srgb, var(--reg) 14%, var(--bg-2));
+  font-family: var(--font-ui);
+  font-weight: 500;
+  font-size: clamp(1.4rem, 3vw, 2.15rem);
+  letter-spacing: -0.02em;
+  box-shadow: 0 24px 50px -28px var(--reg);
+}
+
+/* ---------- Formal: letterpress correspondence ---------- */
+.stage--formal .stage__body {
+  border-top: 3px double color-mix(in srgb, var(--reg) 55%, transparent);
+  border-bottom: 3px double color-mix(in srgb, var(--reg) 55%, transparent);
+  padding: 28px 8px;
+  justify-content: center;
+  text-align: center;
+}
+.stage--formal .stage__text {
+  font-weight: 500;
+  font-size: clamp(1.55rem, 3.2vw, 2.4rem);
+  line-height: 1.38;
+  max-width: 24ch;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Archaic: parchment ---------- */
+.stage--archaic {
+  --stage-ink: #35200f;
+  border-color: #b98a3d;
+  background:
+    radial-gradient(400px 220px at 20% 0%, rgba(255, 255, 255, 0.5), transparent 70%),
+    radial-gradient(500px 300px at 100% 100%, rgba(150, 90, 20, 0.28), transparent 70%),
+    linear-gradient(150deg, #f3e4bf, #e0c68d);
+  box-shadow:
+    inset 0 0 0 7px rgba(120, 70, 15, 0.08),
+    inset 0 0 70px rgba(120, 70, 15, 0.25),
+    var(--shadow);
+}
+.stage--archaic::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border: 1px solid rgba(110, 65, 15, 0.45);
+  border-radius: 20px;
+  pointer-events: none;
+}
+.stage--archaic .stage__label,
+.stage--archaic .stage__register {
+  color: #7a4a14;
+}
+.stage--archaic .stage__register {
+  border-color: rgba(120, 70, 15, 0.5);
+}
+.stage--archaic .stage__text {
+  font-style: italic;
+  font-weight: 500;
+}
+.stage--archaic .stage__text::first-letter {
+  color: #a1301a;
+}
+.stage--archaic .word__entry {
+  text-decoration-color: #a1301a;
+}
+.stage--archaic .btn--ghost {
+  background: rgba(120, 70, 15, 0.1);
+  border-color: rgba(120, 70, 15, 0.4);
+  color: #35200f;
+}
+.stage--archaic .btn--ghost:not(:disabled):hover {
+  background: rgba(120, 70, 15, 0.2);
+}
+.stage--archaic .anatomy,
+.stage--archaic .anatomy summary {
+  color: #35200f;
+}
+.stage--archaic .anatomy {
+  border-color: rgba(120, 70, 15, 0.4);
+  background: rgba(255, 255, 255, 0.22);
+}
+.stage--archaic .anatomy h4,
+.stage--archaic .anatomy__hint,
+.stage--archaic .anatomy__meta,
+.stage--archaic .anatomy__tags,
+.stage--archaic .anatomy__slot {
+  color: #6b4a22;
+}
+.stage--archaic .anatomy p,
+.stage--archaic .anatomy button {
+  color: #35200f;
+}
+
+/* ---------- Academic: a lined notebook ---------- */
+.stage--academic {
+  background:
+    linear-gradient(90deg, transparent 58px, color-mix(in srgb, var(--reg) 70%, transparent) 58px, color-mix(in srgb, var(--reg) 70%, transparent) 60px, transparent 60px),
+    repeating-linear-gradient(0deg, transparent 0 39px, color-mix(in srgb, var(--reg) 14%, transparent) 39px 40px),
+    var(--bg-2);
+}
+.stage--academic .stage__body {
+  padding-left: 52px;
+}
+.stage--academic .stage__text {
+  font-weight: 500;
+  font-size: clamp(1.5rem, 3.1vw, 2.3rem);
+  line-height: 40px;
+}
+.stage--academic .stage__body::after {
+  content: "¹ Ibid., passim.";
+  position: absolute;
+  left: 52px;
+  bottom: -10px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+.stage--academic .stage__chrome {
+  padding-left: 52px;
+}
+
+/* ---------- Legal: pleading paper ---------- */
+.stage--legal {
+  --stage-ink: #1b1b1b;
+  background:
+    linear-gradient(90deg, transparent 66px, #d9534f 66px, #d9534f 67px, transparent 67px, transparent 70px, #d9534f 70px, #d9534f 71px, transparent 71px),
+    repeating-linear-gradient(0deg, transparent 0 35px, rgba(60, 90, 140, 0.2) 35px 36px),
+    #fbf8ef;
+  border-color: #cfc6ad;
+}
+.stage--legal::before {
+  content: "1\A 2\A 3\A 4\A 5\A 6\A 7\A 8\A 9\A 10\A 11\A 12";
+  position: absolute;
+  left: 0;
+  top: 71px;
+  width: 52px;
+  white-space: pre;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 36px;
+  color: #8f8670;
+}
+.stage--legal .stage__label,
+.stage--legal .stage__register {
+  color: #1b1b1b;
+}
+.stage--legal .stage__label {
+  font-weight: 700;
+}
+.stage--legal .stage__register {
+  border-color: rgba(27, 27, 27, 0.4);
+}
+.stage--legal .stage__chrome,
+.stage--legal .stage__body {
+  padding-left: 54px;
+}
+.stage--legal .stage__text {
+  font-weight: 400;
+  font-size: clamp(1.45rem, 2.8vw, 2.1rem);
+  line-height: 36px;
+  letter-spacing: 0;
+}
+.stage--legal .stage__body::after {
+  content: "Respectfully submitted.";
+  position: absolute;
+  right: 4px;
+  bottom: -16px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: #6d6550;
+}
+.stage--legal .word__entry {
+  text-decoration-color: #c0392b;
+}
+.stage--legal .btn--ghost {
+  background: rgba(27, 27, 27, 0.06);
+  border-color: rgba(27, 27, 27, 0.3);
+  color: #1b1b1b;
+}
+.stage--legal .btn--ghost:not(:disabled):hover {
+  background: rgba(27, 27, 27, 0.12);
+}
+.stage--legal .anatomy,
+.stage--legal .anatomy summary,
+.stage--legal .anatomy p,
+.stage--legal .anatomy button {
+  color: #1b1b1b;
+}
+.stage--legal .anatomy {
+  border-color: rgba(27, 27, 27, 0.25);
+  background: rgba(255, 255, 255, 0.55);
+}
+.stage--legal .anatomy h4,
+.stage--legal .anatomy__hint,
+.stage--legal .anatomy__meta,
+.stage--legal .anatomy__tags,
+.stage--legal .anatomy__slot {
+  color: #6d6550;
+}
+
+/* ---------- Vulgar: a loud sticker ---------- */
+.stage--vulgar {
+  --stage-ink: #fff;
+  border-color: #111;
+  border-width: 3px;
+  background:
+    repeating-linear-gradient(135deg, rgba(0, 0, 0, 0.08) 0 14px, transparent 14px 28px),
+    #ff3d46;
+  box-shadow:
+    8px 8px 0 #111,
+    var(--shadow);
+  transform: rotate(-0.8deg);
+}
+.stage--vulgar .stage__label {
+  padding: 4px 10px;
+  background: #111;
+  color: #ffe45e;
+}
+.stage--vulgar .stage__register {
+  background: #ffe45e;
+  border-color: #111;
+  color: #111;
+}
+.stage--vulgar .dot {
+  background: #111;
+  box-shadow: none;
+}
+.stage--vulgar .stage__text {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3.4vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-shadow: 3px 3px 0 #111;
+}
+.stage--vulgar .word__entry {
+  text-decoration-color: #ffe45e;
+  text-decoration-thickness: 0.1em;
+}
+.stage--vulgar .btn--primary {
+  background: #111;
+  color: #ffe45e;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35);
+}
+.stage--vulgar .btn--ghost {
+  background: #fff;
+  border: 2px solid #111;
+  color: #111;
+}
+.stage--vulgar .btn--ghost.is-active {
+  background: #ffe45e;
+  color: #111;
+}
+.stage--vulgar .anatomy {
+  background: #111;
+  border-color: #111;
+}
+
+/* ---------- Anatomy ---------- */
+.anatomy {
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.anatomy summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+}
+.anatomy summary::-webkit-details-marker {
+  display: none;
+}
+.anatomy summary::after {
+  content: "+";
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--accent-2);
+  transition: transform 0.3s var(--ease);
+}
+.anatomy[open] summary::after {
+  transform: rotate(45deg);
+}
+.anatomy__hint {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-faint);
+}
+.anatomy__steps {
+  display: grid;
+  gap: 18px;
+  padding: 4px 18px 20px;
+  counter-reset: step;
+}
+.anatomy__steps > li {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  padding-left: 38px;
+  counter-increment: step;
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+.anatomy__steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: var(--on-accent);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.anatomy__frame {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+.anatomy__frame code {
+  padding: 1px 7px;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent-2);
+}
+.anatomy__meta {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+.anatomy__words {
+  display: grid;
+  gap: 4px;
+}
+.anatomy__words button {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  text-align: left;
+  transition: background 0.2s;
+}
+.anatomy__words button:hover {
+  background: var(--surface-2);
+}
+.anatomy__words b {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--text);
+}
+.anatomy__slot,
+.anatomy__tags {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-faint);
+}
+.anatomy__tags {
+  margin-left: auto;
+}
+
+/* Keep the controls inside the text column on ruled paper. */
+.stage--legal .stage__actions,
+.stage--legal .anatomy {
+  margin-left: 54px;
+}
+.stage--academic .stage__actions,
+.stage--academic .anatomy {
+  margin-left: 52px;
+}
+.stage--legal .stage__actions kbd,
+.stage--academic .stage__actions kbd {
+  display: none;
+}

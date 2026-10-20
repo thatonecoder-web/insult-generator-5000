@@ -1,0 +1,113 @@
+@font-face {
+  font-family: "Lora";
+  src: url("/fonts/Lora-Variable.woff") format("woff");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Lora";
+  src: url("/fonts/Lora-Italic-Variable.woff") format("woff");
+  font-weight: 400 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Regular.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Medium.woff") format("woff");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("/fonts/Poppins-Bold.woff") format("woff");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("/fonts/DejaVuSansMono.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("/fonts/DejaVuSansMono-Bold.woff") format("woff");
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --font-display: "Lora", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-ui: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "DejaVu Sans Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --heat-gradient: linear-gradient(90deg, #ffd27a, #ff9a3c 45%, #ff4b2b 75%, #c0182b);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d0b0a;
+  --bg-2: #161210;
+  --surface: rgba(255, 246, 232, 0.045);
+  --surface-2: rgba(255, 246, 232, 0.09);
+  --border: rgba(255, 240, 220, 0.11);
+  --border-strong: rgba(255, 240, 220, 0.24);
+  --text: #f6eee1;
+  --text-dim: #bfb2a0;
+  --text-faint: #8a7e6e;
+  --accent: #ff5a36;
+  --accent-2: #ffb347;
+  --accent-gradient: linear-gradient(120deg, #ff5a36, #ffb347);
+  --on-accent: #1a0803;
+  --glow: rgba(255, 90, 54, 0.2);
+  --header-bg: rgba(13, 11, 10, 0.72);
+  --shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.9);
+  --track-dim: rgba(13, 11, 10, 0.72);
+
+  --reg-casual: #6ee7b7;
+  --reg-formal: #93a8ff;
+  --reg-archaic: #e8b04a;
+  --reg-academic: #c4a1ff;
+  --reg-legal: #7dd3fc;
+  --reg-vulgar: #ff5a5f;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f7f0e3;
+  --bg-2: #fdf9f0;
+  --surface: rgba(70, 40, 10, 0.045);
+  --surface-2: rgba(70, 40, 10, 0.09);
+  --border: rgba(70, 40, 10, 0.14);
+  --border-strong: rgba(70, 40, 10, 0.3);
+  --text: #1c1611;
+  --text-dim: #5a4e40;
+  --text-faint: #86796a;
+  --accent: #d93a1b;
+  --accent-2: #e08a12;
+  --accent-gradient: linear-gradient(120deg, #d93a1b, #e08a12);
+  --on-accent: #fff7ee;
+  --glow: rgba(217, 58, 27, 0.14);
+  --header-bg: rgba(247, 240, 227, 0.78);
+  --shadow: 0 40px 80px -45px rgba(80, 40, 10, 0.45);
+  --track-dim: rgba(247, 240, 227, 0.78);
+
+  --reg-casual: #0c9a6e;
+  --reg-formal: #4458d6;
+  --reg-archaic: #a56e0a;
+  --reg-academic: #7a47d8;
+  --reg-legal: #0a78a8;
+  --reg-vulgar: #d42a38;
+}
