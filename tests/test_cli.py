@@ -5,7 +5,7 @@ from typing import Any
 import pytest
 
 from insultgen import __version__
-from insultgen.cli import EXIT_FAILURE, EXIT_NOT_IMPLEMENTED, EXIT_OK, main
+from insultgen.cli import EXIT_FAILURE, EXIT_OK, main
 
 
 def test_validate_data_accepts_the_bundled_dataset(capsys: pytest.CaptureFixture[str]) -> None:
@@ -39,18 +39,31 @@ def test_validate_data_handles_invalid_json(
     assert "Could not read dataset" in capsys.readouterr().err
 
 
-def test_generate_is_a_clearly_marked_placeholder(capsys: pytest.CaptureFixture[str]) -> None:
-    assert main(["generate"]) == EXIT_NOT_IMPLEMENTED
-    assert "not implemented yet" in capsys.readouterr().err
+def test_generate_prints_an_insult(capsys: pytest.CaptureFixture[str]) -> None:
+    assert main(["generate", "--register", "legal", "--severity", "6", "--seed", "3"]) == EXIT_OK
+    out = capsys.readouterr().out.strip().splitlines()
+    assert len(out) == 1
+    assert out[0][-1] in ".!?"
 
 
-def test_generate_parses_options(capsys: pytest.CaptureFixture[str]) -> None:
-    code = main(["generate", "--register", "legal", "--severity", "6", "--seed", "3"])
-    err = capsys.readouterr().err
-    assert code == EXIT_NOT_IMPLEMENTED
-    assert "Register.LEGAL" in err
-    assert "severity=6" in err
-    assert "seed=3" in err
+def test_generate_is_reproducible_with_a_seed(capsys: pytest.CaptureFixture[str]) -> None:
+    main(["generate", "--seed", "11", "--count", "4"])
+    first = capsys.readouterr().out
+    main(["generate", "--seed", "11", "--count", "4"])
+    assert capsys.readouterr().out == first
+    assert len(first.strip().splitlines()) == 4
+
+
+def test_generate_reports_unknown_concepts(capsys: pytest.CaptureFixture[str]) -> None:
+    assert main(["generate", "--concept", "nope"]) == EXIT_FAILURE
+    assert "unknown concept" in capsys.readouterr().err
+
+
+@pytest.mark.parametrize("count", ["0", "51", "many"])
+def test_generate_rejects_invalid_counts(count: str) -> None:
+    with pytest.raises(SystemExit) as excinfo:
+        main(["generate", "--count", count])
+    assert excinfo.value.code == 2
 
 
 @pytest.mark.parametrize("severity", ["0", "11", "high"])

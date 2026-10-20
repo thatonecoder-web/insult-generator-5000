@@ -29,6 +29,9 @@ form; `insultgen validate-data` is the authoritative check.
 | `meaning_or_nuance` | string | what it means and how it differs from near-synonyms |
 | `usage_notes` | string | grammatical constraints, connotation, cautions |
 | `compatible_concepts` | list of concept ids | concepts this word can sensibly be paired with |
+| `noun_class` | `person`, `abstract`, `thing` | nouns only; optional in the schema, required by the dataset tests |
+| `targets` | list of `person`, `thing` | adjectives only; what the adjective can describe; required by the dataset tests |
+| `attributive_only` | `true` | adjectives only; the word only works before a noun ("bloody") |
 | `polarity` | `pejorative` (default), `neutral`, `positive` | optional |
 | `review_flags` | list of `obscure`, `obsolete`, `regional`, `disputed`, `sensitive` | optional |
 
@@ -40,6 +43,7 @@ An entry is unique by (`term`, `part_of_speech`), case-insensitively.
 - `vulgar` requires `vulgarity >= 1`; `archaic` requires `archaicness >= 1`.
 - `vulgar` cannot be combined with `formal`, `academic` or `legal`.
 - `positive` polarity requires `severity <= 2`.
+- `noun_class` only on nouns; `targets` and `attributive_only` only on adjectives.
 - No unknown fields at any level.
 
 ## Conventions the test suite also checks (bundled dataset only)
@@ -48,3 +52,13 @@ An entry is unique by (`term`, `part_of_speech`), case-insensitively.
 - Terms are unique across the whole file, regardless of part of speech.
 - Every concept is the primary concept of at least one entry.
 - Each register has at least 75 entries.
+- Every noun has a `noun_class`; every adjective declares its `targets`.
+- Positive nouns are `abstract`.
+
+## Choosing grammar annotations
+
+- `person`: a noun you can say "You are a ___" about. `abstract`: a mass noun ("That is ___").
+  `thing`: anything else.
+- `targets`: ask whether "You are ___" works (`person`) and whether "That argument is ___" works
+  (`thing`). Many adjectives work for both. If neither does, use an empty list.
+- `attributive_only`: use it when "You are ___" is ungrammatical but "You ___ git" is fine.

@@ -42,6 +42,14 @@ Score relative to the other entries. Anchors: `severity` 1-2 is mild teasing, 5 
 8-10 is wounding. `formality` 1-3 is slang, 7-10 is formal prose. Compare with similar entries
 before settling on numbers.
 
+## Grammar annotations
+
+Every noun needs a `noun_class` and every adjective needs `targets` (see
+[data-schema.md](data-schema.md)). The generator trusts them, so a wrong annotation produces a
+wrong sentence. Try your word in the frames: "You are a ___", "You are ___", "Your argument is
+___", "That is ___". Generate a few hundred sentences with `insultgen generate --count 50`
+after adding words and read them.
+
 ## Nuance matters
 
 Synonyms are not interchangeable. Use `meaning_or_nuance` and `usage_notes` to say what makes
@@ -57,4 +65,5 @@ the word different (people versus arguments, mild versus strong, regional, dated
 1. Real word, attested, not a spelling variant of an existing entry.
 2. Not excluded by the rules above.
 3. Register tags are earned; scores are consistent with neighbouring entries.
-4. `insultgen validate-data` and `python -m pytest` pass.
+4. Nouns have a `noun_class`; adjectives have `targets`.
+5. `insultgen validate-data` and `python -m pytest` pass.

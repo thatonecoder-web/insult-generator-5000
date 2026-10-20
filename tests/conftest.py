@@ -2,7 +2,8 @@ from typing import Any
 
 import pytest
 
-from insultgen.loader import load_raw, parse_vocabulary
+from insultgen.generation import InsultGenerator
+from insultgen.loader import load_raw, load_vocabulary, parse_vocabulary
 from insultgen.models import Vocabulary
 
 
@@ -45,6 +46,7 @@ def minimal_raw() -> dict[str, Any]:
                 "meaning_or_nuance": "slow to understand",
                 "usage_notes": "Fits people and arguments.",
                 "compatible_concepts": ["stupidity", "ignorance"],
+                "targets": ["person", "thing"],
             },
             {
                 "term": "dolt",
@@ -59,6 +61,7 @@ def minimal_raw() -> dict[str, Any]:
                 "meaning_or_nuance": "a stupid person",
                 "usage_notes": "Short and punchy.",
                 "compatible_concepts": ["stupidity"],
+                "noun_class": "person",
             },
             {
                 "term": "humility",
@@ -73,6 +76,7 @@ def minimal_raw() -> dict[str, Any]:
                 "meaning_or_nuance": "a modest view of one's own importance",
                 "usage_notes": "Positive term; works via negation.",
                 "compatible_concepts": ["arrogance"],
+                "noun_class": "abstract",
                 "polarity": "positive",
                 "review_flags": ["disputed"],
             },
@@ -90,3 +94,8 @@ def bundled_raw() -> dict[str, Any]:
     raw = load_raw()
     assert isinstance(raw, dict)
     return raw
+
+
+@pytest.fixture(scope="session")
+def bundled_generator() -> InsultGenerator:
+    return InsultGenerator(load_vocabulary())

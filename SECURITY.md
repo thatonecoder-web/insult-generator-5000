@@ -6,10 +6,14 @@ This project is in initial development (0.x). Only the latest release on `main` 
 
 ## Scope
 
-insultgen is a local library and command-line tool. It makes no network requests, runs no
-subprocesses, and uses no `eval` or `pickle`. Realistic concerns include:
+insultgen is a library and command-line tool. It makes no outbound network requests, runs no
+subprocesses, and uses no `eval` or `pickle`. `insultgen serve` starts a local HTTP server that
+binds to `127.0.0.1` by default; it has no authentication or TLS and is not meant to be exposed
+to the internet. Realistic concerns include:
 
 - Handling of untrusted vocabulary files (`insultgen validate-data --path ...`).
+- The HTTP server (request parsing, static file serving, response headers).
+- The web front end (injection through user-controlled data, dependency issues).
 - Dependency or packaging problems.
 
 ## Reporting a vulnerability

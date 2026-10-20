@@ -13,3 +13,7 @@ htmlcov/
 .idea/
 .vscode/
 .DS_Store
+
+# web front end
+web/node_modules/
+web/dist/

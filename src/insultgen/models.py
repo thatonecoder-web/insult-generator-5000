@@ -48,6 +48,25 @@ class Polarity(StrEnum):
     POSITIVE = "positive"
 
 
+class NounClass(StrEnum):
+    """What a noun refers to, so templates can place it grammatically.
+
+    ``PERSON`` nouns take an article ("a dolt"), ``ABSTRACT`` nouns are mass nouns
+    ("balderdash", "villainy") and ``THING`` nouns are countable non-persons ("a cliche").
+    """
+
+    PERSON = "person"
+    ABSTRACT = "abstract"
+    THING = "thing"
+
+
+class Target(StrEnum):
+    """What an adjective can sensibly describe."""
+
+    PERSON = "person"
+    THING = "thing"
+
+
 class ReviewFlag(StrEnum):
     """Markers for entries that deserve a human second look."""
 
@@ -101,6 +120,9 @@ class VocabularyEntry:
     compatible_concepts: tuple[str, ...]
     polarity: Polarity = Polarity.PEJORATIVE
     review_flags: tuple[ReviewFlag, ...] = ()
+    noun_class: NounClass | None = None
+    targets: frozenset[Target] = frozenset()
+    attributive_only: bool = False
 
     def __post_init__(self) -> None:
         if not self.term.strip():
@@ -136,10 +158,25 @@ class GenerationParameters:
 
 
 @dataclass(frozen=True, slots=True)
+class InsultPart:
+    """One piece of a generated sentence: literal text, or a filled vocabulary slot."""
+
+    text: str
+    slot: str | None = None
+    entry: VocabularyEntry | None = None
+
+
+@dataclass(frozen=True, slots=True)
 class GeneratedInsult:
-    """The result of one generation run, with provenance for debugging."""
+    """The result of one generation run, with provenance for debugging and display."""
 
     text: str
     parameters: GenerationParameters
     entries: tuple[VocabularyEntry, ...]
     template_id: str | None = None
+    template_text: str | None = None
+    parts: tuple[InsultPart, ...] = ()
+    register: Register | None = None
+    concept: str | None = None
+    seed: int | None = None
+    severity_tolerance: int | None = None

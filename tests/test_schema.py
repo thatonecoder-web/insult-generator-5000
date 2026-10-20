@@ -14,10 +14,12 @@ from insultgen.models import (
     SEVERITY_MIN,
     VULGARITY_MAX,
     VULGARITY_MIN,
+    NounClass,
     PartOfSpeech,
     Polarity,
     Register,
     ReviewFlag,
+    Target,
 )
 
 
@@ -56,6 +58,8 @@ def test_enums_match_models(schema: dict[str, Any]) -> None:
     assert props["register"]["items"]["enum"] == [m.value for m in Register]
     assert props["polarity"]["enum"] == [m.value for m in Polarity]
     assert props["review_flags"]["items"]["enum"] == [m.value for m in ReviewFlag]
+    assert props["noun_class"]["enum"] == [m.value for m in NounClass]
+    assert props["targets"]["items"]["enum"] == [m.value for m in Target]
 
 
 def test_numeric_ranges_match_models(schema: dict[str, Any]) -> None:

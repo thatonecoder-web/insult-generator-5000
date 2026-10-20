@@ -86,6 +86,8 @@ def test_same_term_with_different_part_of_speech_is_allowed(
 ) -> None:
     clone = dict(minimal_raw["entries"][0])
     clone["part_of_speech"] = "noun"
+    del clone["targets"]
+    clone["noun_class"] = "person"
     minimal_raw["entries"].append(clone)
     assert validate_dataset(minimal_raw) == []
 
@@ -171,3 +173,36 @@ def test_all_problems_are_reported_together(minimal_raw: dict[str, Any]) -> None
 def test_non_object_entries_do_not_crash(minimal_raw: dict[str, Any]) -> None:
     minimal_raw["entries"].append("not an object")
     _assert_issue(minimal_raw, "must be an object")
+
+
+def test_noun_class_is_only_valid_on_nouns(minimal_raw: dict[str, Any]) -> None:
+    minimal_raw["entries"][0]["noun_class"] = "person"
+    _assert_issue(minimal_raw, "noun_class is only valid on nouns")
+
+
+def test_targets_are_only_valid_on_adjectives(minimal_raw: dict[str, Any]) -> None:
+    minimal_raw["entries"][1]["targets"] = ["person"]
+    _assert_issue(minimal_raw, "targets is only valid on adjectives")
+
+
+def test_invalid_noun_class_and_targets(minimal_raw: dict[str, Any]) -> None:
+    minimal_raw["entries"][1]["noun_class"] = "animal"
+    minimal_raw["entries"][0]["targets"] = ["person", "robot"]
+    messages = _messages(minimal_raw)
+    assert any("noun_class must be one of" in m for m in messages)
+    assert any("targets contains invalid values" in m for m in messages)
+
+
+def test_empty_targets_are_allowed(minimal_raw: dict[str, Any]) -> None:
+    minimal_raw["entries"][0]["targets"] = []
+    assert validate_dataset(minimal_raw) == []
+
+
+def test_attributive_only_must_be_true_on_an_adjective(minimal_raw: dict[str, Any]) -> None:
+    minimal_raw["entries"][0]["attributive_only"] = True
+    assert validate_dataset(minimal_raw) == []
+    minimal_raw["entries"][0]["attributive_only"] = False
+    _assert_issue(minimal_raw, "attributive_only must be true")
+    minimal_raw["entries"][0]["attributive_only"] = True
+    minimal_raw["entries"][1]["attributive_only"] = True
+    _assert_issue(minimal_raw, "attributive_only is only valid on adjectives")

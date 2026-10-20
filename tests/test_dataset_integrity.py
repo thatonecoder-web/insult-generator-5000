@@ -43,3 +43,31 @@ def test_positive_entries_are_marked_as_such(bundled_raw: dict[str, Any]) -> Non
     positives = [e for e in bundled_raw["entries"] if e.get("polarity") == "positive"]
     assert positives
     assert all("negation" in e["usage_notes"] for e in positives)
+
+
+def test_every_noun_has_a_noun_class(bundled_raw: dict[str, Any]) -> None:
+    missing = [
+        e["term"]
+        for e in bundled_raw["entries"]
+        if e["part_of_speech"] == "noun" and "noun_class" not in e
+    ]
+    assert not missing, missing
+
+
+def test_every_adjective_declares_its_targets(bundled_raw: dict[str, Any]) -> None:
+    missing = [
+        e["term"]
+        for e in bundled_raw["entries"]
+        if e["part_of_speech"] == "adjective" and "targets" not in e
+    ]
+    assert not missing, missing
+
+
+def test_positive_nouns_are_abstract(bundled_raw: dict[str, Any]) -> None:
+    wrong = [
+        e["term"]
+        for e in bundled_raw["entries"]
+        if e.get("polarity") == "positive" and e["part_of_speech"] == "noun"
+        and e.get("noun_class") != "abstract"
+    ]
+    assert not wrong, wrong

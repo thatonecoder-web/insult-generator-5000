@@ -10,10 +10,12 @@ from typing import Any, cast
 
 from insultgen.models import (
     Concept,
+    NounClass,
     PartOfSpeech,
     Polarity,
     Register,
     ReviewFlag,
+    Target,
     Vocabulary,
     VocabularyEntry,
 )
@@ -83,4 +85,7 @@ def _build_entry(item: Mapping[str, Any]) -> VocabularyEntry:
         compatible_concepts=tuple(item["compatible_concepts"]),
         polarity=Polarity(item.get("polarity", Polarity.PEJORATIVE.value)),
         review_flags=tuple(ReviewFlag(value) for value in item.get("review_flags", ())),
+        noun_class=NounClass(item["noun_class"]) if "noun_class" in item else None,
+        targets=frozenset(Target(value) for value in item.get("targets", ())),
+        attributive_only=bool(item.get("attributive_only", False)),
     )

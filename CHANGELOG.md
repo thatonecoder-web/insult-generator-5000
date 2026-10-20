@@ -30,3 +30,12 @@ Version 0.1.0 is an initial development release; it is not feature-complete.
 - CLI skeleton
 - Development tooling
 - Documentation
+- Template-based insult generator: typed sentence frames (58, organized by register), article
+  agreement, seeded and reproducible, with severity and concept steering
+- Grammar annotations in the dataset: `noun_class`, `targets` and `attributive_only`
+- `insultgen generate` (with `--count` and `--seed`) and `insultgen serve`
+- JSON API (`/api/generate`, `/api/vocabulary`, `/api/meta`, `/api/health`) on a standard-library
+  HTTP server, with a framework-independent service layer
+- React web interface in `web/`: register-themed result stage, lexicon explorer, vocabulary
+  map, shareable links, light and dark themes
+- Front-end unit tests and an optional end-to-end browser test

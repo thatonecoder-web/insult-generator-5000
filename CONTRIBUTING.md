@@ -30,6 +30,14 @@ python -m ruff check .
 python -m mypy
 ```
 
+If you changed anything under `web/`, also run:
+
+```bash
+cd web && npm install && npm test && npm run build
+```
+
+The browser test in `web/e2e/` is optional but worth running for interface changes.
+
 New behaviour needs tests. Tests must be small and deterministic: no network, no wall-clock
 time, no unseeded randomness.
 
@@ -38,8 +46,10 @@ time, no unseeded randomness.
 1. Read [docs/vocabulary-guidelines.md](docs/vocabulary-guidelines.md). It lists what the
    dataset excludes (slurs, sexual content, invented words).
 2. Add entries to `src/insultgen/data/vocabulary.json`, following [docs/data-schema.md](docs/data-schema.md).
-3. Run `insultgen validate-data` and `python -m pytest`.
-4. In the pull request, mention anything uncertain (register, severity, accuracy).
+3. Give every noun a `noun_class` and every adjective its `targets` (see the guidelines).
+4. Run `insultgen validate-data` and `python -m pytest`, then generate some sentences with
+   your words and read them.
+5. In the pull request, mention anything uncertain (register, severity, accuracy).
 
 ## Code style
 

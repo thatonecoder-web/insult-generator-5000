@@ -22,10 +22,12 @@ from insultgen.models import (
     SEVERITY_MIN,
     VULGARITY_MAX,
     VULGARITY_MIN,
+    NounClass,
     PartOfSpeech,
     Polarity,
     Register,
     ReviewFlag,
+    Target,
 )
 
 SCHEMA_VERSION = 1
@@ -47,7 +49,7 @@ ENTRY_REQUIRED_FIELDS = (
     "usage_notes",
     "compatible_concepts",
 )
-ENTRY_OPTIONAL_FIELDS = ("polarity", "review_flags")
+ENTRY_OPTIONAL_FIELDS = ("polarity", "review_flags", "noun_class", "targets", "attributive_only")
 
 MAX_POSITIVE_SEVERITY = 2
 
@@ -191,6 +193,21 @@ def _validate_entry_body(
         polarity = _choice(item, "polarity", Polarity, location, issues) or polarity
     if "review_flags" in item:
         _choice_list(item, "review_flags", ReviewFlag, location, issues, allow_empty=True)
+
+    pos = item.get("part_of_speech")
+    if "noun_class" in item:
+        _choice(item, "noun_class", NounClass, location, issues)
+        if pos != PartOfSpeech.NOUN.value:
+            issues.append(ValidationIssue(location, "noun_class is only valid on nouns"))
+    if "targets" in item:
+        _choice_list(item, "targets", Target, location, issues, allow_empty=True)
+        if pos != PartOfSpeech.ADJECTIVE.value:
+            issues.append(ValidationIssue(location, "targets is only valid on adjectives"))
+    if "attributive_only" in item:
+        if item["attributive_only"] is not True:
+            issues.append(ValidationIssue(location, "attributive_only must be true when present"))
+        if pos != PartOfSpeech.ADJECTIVE.value:
+            issues.append(ValidationIssue(location, "attributive_only is only valid on adjectives"))
 
     if registers is None:
         return

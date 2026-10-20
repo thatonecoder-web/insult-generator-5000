@@ -172,6 +172,26 @@
               "sensitive"
             ]
           }
+        },
+        "noun_class": {
+          "enum": [
+            "person",
+            "abstract",
+            "thing"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "person",
+              "thing"
+            ]
+          }
+        },
+        "attributive_only": {
+          "const": true
         }
       }
     }

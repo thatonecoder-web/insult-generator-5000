@@ -2,14 +2,9 @@
 
 ## Our pledge
 
-We want participation in this project to be a harassment-free experience for everyone,
-regardless of age, body size, disability, ethnicity, gender identity and expression, level of
-experience, nationality, personal appearance, race, religion, or sexual identity and
-orientation.
+We want participation in this project to be a harassment-free experience for everyone, regardless of age, body size, disability,ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
-This project is about the craft of insults as language. That is a topic, not a licence. The
-words in the dataset are for fiction, humour, writing practice and study. Do not use this
-project, its issues, or its discussions to insult or demean other contributors.
+This project is about the craft of insults as language. That is a topic, not a licence. The words in the dataset are for fiction, humour, writing practice and study. Do not use this project, its issues, or its discussions to insult or demean other contributors.
 
 ## Expected behaviour
 
@@ -28,13 +23,11 @@ project, its issues, or its discussions to insult or demean other contributors.
 
 ## Enforcement
 
-Maintainers may edit or remove comments, commits and issues that violate this code, and may
-temporarily or permanently ban contributors for behaviour they judge inappropriate.
+Maintainers may edit or remove comments, commits and issues that violate this code, and may temporarily or permanently ban contributors for behaviour they judge inappropriate.
 
 Report problems to the maintainers at: [CONTACT METHOD TO BE ADDED BEFORE PUBLIC RELEASE].
 Reports are handled confidentially, and reporters are not retaliated against.
 
 ## Attribution
 
-This document is adapted in structure from the Contributor Covenant (https://www.contributor-covenant.org),
-which is licensed under CC BY 4.0. It is a shorter paraphrase, not the verbatim text.
+This document is adapted in structure from the Contributor Covenant (https://www.contributor-covenant.org), which is licensed under CC BY 4.0. It is a shorter paraphrase, not the verbatim text.

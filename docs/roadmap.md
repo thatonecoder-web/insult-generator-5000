@@ -4,27 +4,33 @@ Versions follow semantic versioning. Everything before 1.0 may change.
 
 ## 0.1.0 (initial development release)
 
-Repository skeleton, typed models, curated vocabulary dataset, validation, tests, CLI skeleton,
-CI. No sentence generation.
+Repository skeleton, typed models, curated vocabulary, validation, tests, CI.
 
-## 0.2.0: grammar and templates
+Since then (unreleased): the template-based generator, grammar annotations, the CLI `generate`
+command, the JSON API, the React web interface and the `serve` command.
 
-- Template format and loader (data-driven, validated like the vocabulary).
-- Part-of-speech slots, agreement (articles, number), and positive-polarity handling (negation frames).
-- Compatibility rules between concepts, registers and constructions.
+## Next: generator quality
 
-## 0.3.0: generation
+- More frames per register, and frames that use verbs ("You prevaricate, dissemble and call it
+  honesty."). Verbs need a transitivity annotation first.
+- Use `thing` nouns and adverbs.
+- Reduce repetition: remember recent words within a session, and penalize reuse.
+- Plural and countability handling, so more frame shapes are safe.
 
-- Weighted, seeded selection so output is reproducible.
-- `insultgen generate` produces real output; `--seed` becomes meaningful.
-- Output validation: malformed sentences and register clashes are rejected.
+## Next: dataset quality
 
-## 0.4.0: dataset quality
+- Expert review of flagged entries, and a dictionary check of every definition.
+- Fill the thin spots: vulgar, legal, academic and archaic cover only 22 to 38 of the 63 concepts.
+- A sensitivity review of the register labels.
 
-- Expert review of flagged entries; fill thin concepts; add adverbs.
-- More tests for balance across registers and concepts.
+## Next: web interface
+
+- Batch generation ("give me ten").
+- Export and import of the Hall of Fame.
+- A static build that runs the generator in the browser (a port or WebAssembly), so the site can
+  be hosted without a server.
+- Automated visual regression tests.
 
 ## Later
 
-- Optional output formats (JSON), a small Python API guide, and a stable 1.0 interface.
-- A licence decision before any public release.
+- A stable 1.0 interface and a licence decision before any public release.

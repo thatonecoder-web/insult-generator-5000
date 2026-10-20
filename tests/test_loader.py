@@ -5,7 +5,7 @@ from typing import Any
 import pytest
 
 from insultgen.loader import DatasetError, load_raw, load_vocabulary, parse_vocabulary
-from insultgen.models import PartOfSpeech, Polarity, Register, ReviewFlag
+from insultgen.models import NounClass, PartOfSpeech, Polarity, Register, ReviewFlag, Target
 
 
 def test_bundled_dataset_loads() -> None:
@@ -35,6 +35,11 @@ def test_entries_are_converted_to_typed_values(minimal_raw: dict[str, Any]) -> N
     assert humility.polarity is Polarity.POSITIVE
     assert humility.review_flags == (ReviewFlag.DISPUTED,)
     assert vocabulary.concepts["stupidity"].related == ("ignorance",)
+    assert obtuse.targets == frozenset({Target.PERSON, Target.THING})
+    assert obtuse.noun_class is None
+    assert dolt.noun_class is NounClass.PERSON
+    assert dolt.targets == frozenset()
+    assert obtuse.attributive_only is False
 
 
 def test_invalid_dataset_raises_with_all_issues(minimal_raw: dict[str, Any]) -> None:
@@ -44,3 +49,8 @@ def test_invalid_dataset_raises_with_all_issues(minimal_raw: dict[str, Any]) -> 
         parse_vocabulary(minimal_raw)
     assert len(excinfo.value.issues) == 2
     assert "2 validation issue" in str(excinfo.value)
+
+
+def test_attributive_only_is_loaded(minimal_raw: dict[str, Any]) -> None:
+    minimal_raw["entries"][0]["attributive_only"] = True
+    assert parse_vocabulary(minimal_raw).entries[0].attributive_only is True
