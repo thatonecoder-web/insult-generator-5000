@@ -1,4 +1,5 @@
 # insult-generator-5000
+This project is complete; enjoy it however you'd like!
 
 An algorithmic English insult generator. It builds grammatically sound insults from a curated,
 hand-annotated vocabulary: pick a **register**, dial the **severity**, aim at a **concept**.
